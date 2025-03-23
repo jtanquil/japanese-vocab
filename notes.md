@@ -58,4 +58,84 @@
   - `POST`: updates the word in db (barring validation), returns to search page
   - `POST`: deletes word from db, returns to search page
 - `/notes`: page w/links to static content
-  - possible example routes: `/notes/verbs`, `/notes/adjectives` etc
+  - possible example routes: `/notes/verbs`, `/notes/adjectives`, `/notes/particles` etc
+
+**DBD sketch**
+
+![dbd sketch](/dbd.png)
+
+Created in dbdiagram.io:
+
+```
+table words {
+  id integer [primary key]
+  word varchar [not null]
+  pronunciation varchar [not null]
+  part_of_speech int [not null]
+  meaning varchar [not null]
+  sentence varchar [not null]
+  conjugation_group int
+}
+
+table conjugation_groups {
+  id integer [primary key]
+  conjugation_group varchar [not null]
+}
+
+table parts_of_speech {
+  id integer [primary key]
+  part_of_speech varchar [not null]
+}
+
+table kanji {
+  id integer [primary key]
+  kanji varchar [not null]
+  meaning varchar [not null]
+}
+
+table readings {
+  id integer [primary key]
+  kanji_id integer [not null]
+  reading_type int [not null]
+}
+
+table reading_types {
+  id integer [primary key]
+  reading_type varchar [not null]
+}
+
+table kanji_words {
+  id integer [primary key]
+  word_id integer [not null]
+  kanji_id integer [not null]
+  word_order integer [not null]
+}
+
+table tags {
+  id integer [primary key]
+  tag varchar [not null]
+}
+
+table tags_words {
+  id integer [primary key]
+  tag_id integer [not null]
+  word_id integer [not null]
+}
+
+table tags_kanji {
+  id integer [primary key]
+  tag_id integer [not null]
+  kanji_id integer [not null]
+}
+
+Ref words_parts_of_speech: words.part_of_speech > parts_of_speech.id
+Ref words_conjugation_groups: words.conjugation_group > conjugation_groups.id
+Ref kanji_readings: kanji.id < readings.kanji_id 
+Ref reading_reading_types: readings.reading_type > reading_types.id
+Ref words_kanji_words: words.id <> kanji_words.word_id
+Ref kanji_kanji_words: kanji.id <> kanji_words.kanji_id
+Ref tags_tags_words: tags.id < tags_words.tag_id
+Ref tags_tags_kanji: tags.id < tags_kanji.tag_id
+Ref words_tags_words: words.id < tags_words.word_id
+Ref kanji_tags_words: kanji.id < tags_kanji.kanji_id
+```
