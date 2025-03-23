@@ -31,3 +31,31 @@
   - two joins: words/conjugations (1-M) and words/kanji (M-M, w/order column so kanji appear in order on the words page)
 - kanji can have multiple **readings**
   - one join: kanji/readings with a type column (on/kun-yomi)
+
+#### 3-23-2025
+
+**Routes**:
+
+- `/`: search page w/search field
+  - `GET`: just returns the search page
+  - `POST`: searches, returns search page w/rendered results
+- `/kanji/{kanji}`: page for a single kanji
+  - `GET`: returns the page
+- `/word/{word}`: page for a single word
+  - `GET`: returns the page
+- `/kanji/add`: page w/form to add kanji to db
+  - `GET`: returns the blank form
+  - `POST`: adds the kanji to db (barring validation), returns to search page
+- `/kanji/{kanji}/edit`: page w/form to edit kanji
+  - `GET`: returns the edit page
+  - `POST`: updates the kanji in db (barring validation), returns to search page
+  - `POST`: deletes kanji from db, returns to search page
+- `/word/add`: page w/form to add word to db
+  - `GET`: returns the blank form
+  - `POST`: adds the word to db (barring validation), returns to search page
+- `/word/{word}/edit`: page w/form to edit word
+  - `GET`: returns the edit page
+  - `POST`: updates the word in db (barring validation), returns to search page
+  - `POST`: deletes word from db, returns to search page
+- `/notes`: page w/links to static content
+  - possible example routes: `/notes/verbs`, `/notes/adjectives` etc
