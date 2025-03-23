@@ -1,5 +1,5 @@
-## Japanese Flashcards App
+## Japanese Vocab App
 
 ---
 
-Practicing Python and Flask with a Japanese Flashcards/Notes app.
+Practicing Python and Flask with a Japanese Vocab/Notes app.
