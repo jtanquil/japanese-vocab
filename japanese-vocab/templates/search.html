@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Japanese Vocab Database</title>
+</head>
+<body>
+  <h1>Japanese Vocab Database</h1>
+  
+  <form action="/" method="post">
+    <label for="search">Search (vocab, kanji, tags): </label>
+    <input type="text" id="search" name="search"><br><br>
+    <input type="submit" value="Search">
+  </form>
+
+  <hr>
+
+  {% if search_results %}
+    <ul>
+    {% for result in search_results %}
+      <li>
+        {% for key in result %}
+          <p><b>{{ key|title|replace('_', ' ') }}: </b>
+            {% if result[key] is string %}
+              {{ result[key] }}
+            {% else %}
+              {{ result[key]|join(', ') }}
+            {% endif %}
+          </p>
+        {% endfor %}
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+</body>
+</html>

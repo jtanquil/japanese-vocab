@@ -38,7 +38,7 @@
 
 - `/`: search page w/search field
   - `GET`: just returns the search page
-  - `POST`: searches, returns search page w/rendered results
+  - `POST`: returns the search page, with results rendered if there are any
 - `/kanji/{kanji}`: page for a single kanji
   - `GET`: returns the page
 - `/word/{word}`: page for a single word
