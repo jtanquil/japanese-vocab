@@ -24,6 +24,10 @@ def create_app(test_config = None):
   except OSError:
      pass
   
+  # register the db functions with the app
+  from . import db
+  db.init_app(app)
+  
   @app.route('/', methods = ('GET', 'POST'))
   def get_search_page(search_results = None):
     if 'search' in request.form and request.form['search'] is not '':
