@@ -60,7 +60,7 @@
 - `/notes`: page w/links to static content
   - possible example routes: `/notes/verbs`, `/notes/adjectives`, `/notes/particles` etc
 
-**DBD sketch**
+**DBD sketch - updated 3-26-2025**
 
 ![dbd sketch](/dbd.png)
 
@@ -70,11 +70,23 @@ Created in dbdiagram.io:
 table words {
   id integer [primary key]
   word varchar [not null]
-  pronunciation varchar [not null]
-  part_of_speech int [not null]
+}
+
+table words_furigana {
+  id integer [primary key]
+  word_id int [not null]
+  word_order int [not null]
+  word_part varchar [not null]
+  furigana varchar
+}
+
+table words_meanings {
+  id integer [primary key]
+  word_id int [not null]
   meaning varchar [not null]
-  sentence varchar [not null]
-  conjugation_group int
+  example varchar [not null]
+  part_of_speech_id int [not null]
+  conjugation_group_id int
 }
 
 table conjugation_groups {
@@ -96,6 +108,7 @@ table kanji {
 table readings {
   id integer [primary key]
   kanji_id integer [not null]
+  reading varchar [not null]
   reading_type int [not null]
 }
 
@@ -128,8 +141,10 @@ table tags_kanji {
   kanji_id integer [not null]
 }
 
-Ref words_parts_of_speech: words.part_of_speech > parts_of_speech.id
-Ref words_conjugation_groups: words.conjugation_group > conjugation_groups.id
+Ref words_meanings_parts_of_speech: words_meanings.part_of_speech_id > parts_of_speech.id
+Ref words_meanings_conjugation_groups: words_meanings.conjugation_group_id > conjugation_groups.id
+Ref words_words_furigana: words_furigana.word_id > words.id
+Ref words_words_meanings: words_meanings.word_id > words.id
 Ref kanji_readings: kanji.id < readings.kanji_id 
 Ref reading_reading_types: readings.reading_type > reading_types.id
 Ref words_kanji_words: words.id <> kanji_words.word_id
