@@ -1,3 +1,64 @@
+import sqlite3
+
+from .. import db
+
+def query_to_dict(rows):
+  return [ { key: row[key] for key in row.keys() } for row in rows ]
+
+def test_db():
+  test = db.get_db()
+
+  # reinitialize the db
+  db.init_db()
+
+  print("reinitialized db")
+
+  test.execute(
+    """
+      INSERT INTO words (word) VALUES ('先生')
+    """
+  )
+  
+  test.execute(
+    """
+      INSERT INTO words_furigana (word_id, word_order, word_part, furigana) VALUES
+      (1, 1, '先', 'せん'),
+      (1, 2, '生', 'せい')
+    """
+  )
+
+  test.execute(
+    """
+      INSERT INTO parts_of_speech (part_of_speech) VALUES
+      ('noun')
+    """
+  )
+
+  test.execute(
+    """
+      INSERT INTO words_meanings (word_id, meaning, example, part_of_speech_id) VALUES
+      (1, 'teacher', '私は日本語の先生があります。(I have a Japanese teacher.)', 1)
+    """
+  )
+
+  # res = test.execute(
+  #   """
+  #     SELECT * FROM words
+  #   """
+  # ).fetchone()
+
+  res = test.execute(
+    """
+      SELECT * FROM words
+      JOIN words_furigana
+      ON words.id = words_furigana.word_id
+      JOIN words_meanings
+      ON words.id = words_meanings.word_id
+    """
+  ).fetchall()
+
+  return query_to_dict(res)
+
 testdata = [
   {
     "word": "先生",

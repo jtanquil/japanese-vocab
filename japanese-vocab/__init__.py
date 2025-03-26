@@ -30,8 +30,13 @@ def create_app(test_config = None):
   
   @app.route('/', methods = ('GET', 'POST'))
   def get_search_page(search_results = None):
-    if 'search' in request.form and request.form['search'] is not '':
+    if 'search' in request.form and request.form['search'] != '':
        search_results = testdata.testdata
     return render_template('search.html', search_results = search_results)
+  
+  @app.route('/test_search')
+  def test_search():
+      res = testdata.test_db()
+      return res
   
   return app
