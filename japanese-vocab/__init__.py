@@ -1,7 +1,6 @@
 import os
 
-from flask import Flask, render_template, request
-from .tests import testdata
+from flask import Flask
 
 def create_app(test_config = None):
   # create and configure the app
@@ -27,16 +26,9 @@ def create_app(test_config = None):
   # register the db functions with the app
   from . import db
   db.init_app(app)
-  
-  @app.route('/', methods = ('GET', 'POST'))
-  def get_search_page(search_results = None):
-    if 'search' in request.form and request.form['search'] != '':
-       search_results = testdata.testdata
-    return render_template('search.html', search_results = search_results)
-  
-  @app.route('/test_search')
-  def test_search():
-      res = testdata.test_db()
-      return res
+
+  # registers blueprints
+  from . import search
+  app.register_blueprint(search.bp)
   
   return app
