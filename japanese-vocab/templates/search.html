@@ -21,7 +21,13 @@
         {% for key in result %}
           <p><b>{{ key|title|replace('_', ' ') }}: </b>
             {% if result[key] is mapping %}
-              {{ result[key]|join(', ') }}
+              <br>
+              {% for id in result[key] %}
+                {{ id }}: <br>
+                {% for col in result[key][id] %}
+                  {{ col|title|replace('_', ' ') }}: {{ result[key][id][col] }}<br>
+                {% endfor %}
+              {% endfor %}
             {% else %}
               {{ result[key] }}
             {% endif %}
